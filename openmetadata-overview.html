@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>OpenMetadata 项目速览</title>
+    <style>
+      :root {
+        --bg: #07111f;
+        --bg2: #0d1d2d;
+        --panel: rgba(15, 23, 42, 0.88);
+        --panel-strong: rgba(10, 18, 31, 0.96);
+        --line: rgba(148, 163, 184, 0.2);
+        --text: #e5eefb;
+        --muted: #a7b7cf;
+        --brand: #6ee7f9;
+        --brand-2: #7c9bff;
+        --green: #7ee7b5;
+        --amber: #fbbf24;
+        --red: #ff7a7a;
+        --purple: #b79cff;
+        --shadow: 0 20px 60px rgba(2, 6, 23, 0.45);
+      }
+
+      * { box-sizing: border-box; }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+        background:
+          radial-gradient(circle at top left, rgba(110, 231, 249, 0.12), transparent 25%),
+          radial-gradient(circle at right center, rgba(124, 155, 255, 0.15), transparent 22%),
+          linear-gradient(180deg, var(--bg), var(--bg2));
+        color: var(--text);
+      }
+
+      a { color: inherit; text-decoration: none; }
+
+      .container {
+        width: min(1200px, calc(100% - 32px));
+        margin: 0 auto;
+      }
+
+      header {
+        position: sticky;
+        top: 0;
+        backdrop-filter: blur(12px);
+        background: rgba(7, 17, 31, 0.68);
+        border-bottom: 1px solid var(--line);
+        z-index: 10;
+      }
+
+      .nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        height: 72px;
+      }
+
+      .brand {
+        font-weight: 700;
+        letter-spacing: 0.03em;
+      }
+
+      .brand .dot {
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        margin-right: 10px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--brand), var(--brand-2));
+        box-shadow: 0 0 18px rgba(110, 231, 249, 0.75);
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 20px;
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .hero {
+        padding: 72px 0 24px;
+      }
+
+      .hero-grid {
+        display: grid;
+        grid-template-columns: 1.3fr 0.7fr;
+        gap: 28px;
+        align-items: center;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 14px;
+        border: 1px solid rgba(110, 231, 249, 0.35);
+        border-radius: 999px;
+        color: var(--brand);
+        background: rgba(110, 231, 249, 0.08);
+        font-size: 12px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      h1 {
+        margin: 18px 0 16px;
+        font-size: clamp(2.5rem, 5vw, 4.4rem);
+        line-height: 1.05;
+        letter-spacing: -0.05em;
+      }
+
+      .accent {
+        background: linear-gradient(135deg, var(--brand), var(--purple));
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+
+      .hero p {
+        margin: 0;
+        max-width: 720px;
+        color: var(--muted);
+        font-size: 1.08rem;
+        line-height: 1.8;
+      }
+
+      .cta-row {
+        display: flex;
+        gap: 16px;
+        flex-wrap: wrap;
+        margin-top: 28px;
+      }
+
+      .fact-row {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 10px;
+        margin-top: 28px;
+        max-width: 620px;
+      }
+
+      .fact {
+        padding: 12px 14px;
+        border-left: 2px solid var(--brand);
+        background: rgba(110, 231, 249, 0.05);
+      }
+
+      .fact strong {
+        display: block;
+        color: var(--brand);
+        font-size: 1.1rem;
+      }
+
+      .fact span {
+        color: var(--muted);
+        font-size: 0.82rem;
+      }
+
+      .button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 44px;
+        padding: 0 20px;
+        border-radius: 12px;
+        border: 1px solid var(--line);
+        font-weight: 600;
+        transition: transform 0.2s ease, border-color 0.2s ease;
+      }
+
+      .button:hover { transform: translateY(-1px); }
+
+      .button.primary {
+        background: linear-gradient(135deg, var(--brand), var(--brand-2));
+        color: #07111f;
+        border-color: transparent;
+      }
+
+      .button.secondary {
+        background: rgba(148, 163, 184, 0.04);
+        color: var(--text);
+      }
+
+      .hero-card {
+        background: linear-gradient(180deg, rgba(12, 21, 32, 0.9), rgba(10, 18, 31, 0.94));
+        border: 1px solid var(--line);
+        border-radius: 22px;
+        padding: 22px;
+        box-shadow: var(--shadow);
+      }
+
+      .mini-graph {
+        position: relative;
+        height: 320px;
+        border-radius: 18px;
+        background: linear-gradient(180deg, rgba(110, 231, 249, 0.06), rgba(124, 155, 255, 0.03));
+        border: 1px solid rgba(148, 163, 184, 0.2);
+        overflow: hidden;
+      }
+
+      .node {
+        position: absolute;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 12px;
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--text);
+        background: rgba(15, 23, 42, 0.9);
+        border: 1px solid rgba(110, 231, 249, 0.25);
+        box-shadow: 0 0 0 1px rgba(124, 155, 255, 0.18);
+      }
+
+      .n1 { left: 18px; top: 32px; width: 110px; height: 52px; }
+      .n2 { left: 121px; top: 132px; width: 124px; height: 52px; }
+      .n3 { left: 64px; top: 220px; width: 118px; height: 52px; }
+      .n4 { right: 18px; top: 46px; width: 120px; height: 52px; }
+      .n5 { right: 28px; top: 188px; width: 120px; height: 52px; }
+
+      .line {
+        position: absolute;
+        height: 2px;
+        background: linear-gradient(90deg, rgba(110, 231, 249, 0.2), rgba(124, 155, 255, 0.8), rgba(110, 231, 249, 0.2));
+        transform-origin: left center;
+      }
+
+      .l1 { left: 128px; top: 56px; width: 92px; transform: rotate(36deg); }
+      .l2 { left: 180px; top: 160px; width: 90px; transform: rotate(112deg); }
+      .l3 { left: 160px; top: 218px; width: 115px; transform: rotate(30deg); }
+      .l4 { right: 144px; top: 78px; width: 90px; transform: rotate(-44deg); }
+      .l5 { right: 140px; top: 198px; width: 98px; transform: rotate(-42deg); }
+
+      section {
+        padding: 40px 0;
+      }
+
+      .section-title {
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 20px;
+      }
+
+      .section-title h2 {
+        margin: 0;
+        font-size: clamp(1.5rem, 2vw, 2.3rem);
+        letter-spacing: -0.04em;
+      }
+
+      .section-title span {
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .grid-3 {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 18px;
+      }
+
+      .card {
+        background: rgba(15, 23, 42, 0.8);
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        padding: 22px 20px;
+      }
+
+      .card h3 {
+        margin: 0 0 12px;
+        font-size: 1.08rem;
+      }
+
+      .card p,
+      .card li {
+        color: var(--muted);
+        line-height: 1.7;
+      }
+
+      .card ul {
+        margin: 0;
+        padding-left: 18px;
+      }
+
+      .context-grid {
+        display: grid;
+        grid-template-columns: repeat(7, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .context-item {
+        min-height: 124px;
+        padding: 16px 13px;
+        border: 1px solid var(--line);
+        border-top: 3px solid var(--brand);
+        background: rgba(15, 23, 42, 0.74);
+      }
+
+      .context-item:nth-child(2) { border-top-color: var(--green); }
+      .context-item:nth-child(3) { border-top-color: var(--amber); }
+      .context-item:nth-child(4) { border-top-color: var(--purple); }
+      .context-item:nth-child(5) { border-top-color: var(--red); }
+      .context-item:nth-child(6) { border-top-color: var(--brand-2); }
+      .context-item:nth-child(7) { border-top-color: #f59e0b; }
+
+      .context-item h3 {
+        margin: 0 0 8px;
+        font-size: 0.96rem;
+      }
+
+      .context-item p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 0.86rem;
+        line-height: 1.55;
+      }
+
+      .action-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 14px;
+      }
+
+      .action {
+        display: flex;
+        align-items: start;
+        gap: 12px;
+        padding: 16px;
+        background: rgba(15, 23, 42, 0.78);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+      }
+
+      .action-index {
+        flex: 0 0 auto;
+        width: 28px;
+        height: 28px;
+        line-height: 27px;
+        border: 1px solid rgba(110, 231, 249, 0.35);
+        color: var(--brand);
+        text-align: center;
+        font-weight: 700;
+      }
+
+      .action h3 {
+        margin: 0 0 5px;
+        font-size: 1rem;
+      }
+
+      .action p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 0.9rem;
+        line-height: 1.55;
+      }
+
+      .stack-list {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px 16px;
+      }
+
+      .stack-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 12px;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        background: rgba(148, 163, 184, 0.03);
+      }
+
+      .chip {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--brand), var(--purple));
+      }
+
+      .flow {
+        display: grid;
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .flow-step {
+        position: relative;
+        background: rgba(15, 23, 42, 0.78);
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        padding: 18px 14px;
+        min-height: 160px;
+      }
+
+      .flow-step::after {
+        content: "→";
+        position: absolute;
+        right: -14px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--muted);
+        font-size: 1.2rem;
+      }
+
+      .flow-step:last-child::after { content: ""; }
+
+      .step-num {
+        display: inline-block;
+        width: 26px;
+        height: 26px;
+        margin-bottom: 12px;
+        line-height: 26px;
+        text-align: center;
+        border-radius: 50%;
+        background: rgba(110, 231, 249, 0.1);
+        border: 1px solid rgba(110, 231, 249, 0.35);
+        color: var(--brand);
+        font-weight: 700;
+      }
+
+      .flow-step h3 {
+        margin: 0 0 8px;
+        font-size: 1rem;
+      }
+
+      .flow-step p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.7;
+        font-size: 0.95rem;
+      }
+
+      .module-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 18px;
+      }
+
+      .module {
+        background: rgba(15, 23, 42, 0.8);
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        padding: 18px 16px;
+      }
+
+      .module .tag {
+        display: inline-block;
+        margin-bottom: 12px;
+        padding: 6px 10px;
+        border-radius: 999px;
+        font-size: 12px;
+        background: rgba(124, 155, 255, 0.12);
+        color: var(--brand);
+      }
+
+      .module h3 {
+        margin: 0 0 8px;
+      }
+
+      .module p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.7;
+      }
+
+      .quote {
+        margin-top: 18px;
+        padding: 22px 24px;
+        border-left: 3px solid var(--brand);
+        border-radius: 12px;
+        background: rgba(110, 231, 249, 0.05);
+        color: #dfeefb;
+        line-height: 1.9;
+      }
+
+      .roadmap {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 1px;
+        overflow: hidden;
+        border: 1px solid var(--line);
+        background: var(--line);
+      }
+
+      .roadmap-step {
+        padding: 16px;
+        background: var(--panel-strong);
+      }
+
+      .roadmap-step strong {
+        color: var(--brand);
+        font-size: 0.9rem;
+      }
+
+      .roadmap-step p {
+        margin: 7px 0 0;
+        color: var(--muted);
+        line-height: 1.55;
+        font-size: 0.9rem;
+      }
+
+      .footer {
+        padding: 32px 0 60px;
+        color: var(--muted);
+        font-size: 0.95rem;
+      }
+
+      @media (max-width: 980px) {
+        .hero-grid,
+        .grid-3,
+        .module-grid,
+        .flow,
+        .context-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+
+      @media (max-width: 760px) {
+        .hero-grid,
+        .grid-3,
+        .module-grid,
+        .flow,
+        .stack-list,
+        .fact-row,
+        .context-grid,
+        .action-grid,
+        .roadmap {
+          grid-template-columns: 1fr;
+        }
+
+        .nav-links {
+          display: none;
+        }
+
+        .flow-step::after {
+          content: "↓";
+          right: 50%;
+          top: auto;
+          bottom: -18px;
+          transform: translateX(50%);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="container nav">
+        <div class="brand"><span class="dot"></span>OpenMetadata</div>
+        <nav class="nav-links">
+          <a href="#why">为什么存在</a>
+          <a href="#architecture">架构</a>
+          <a href="#ai">AI 能力</a>
+          <a href="#modules">模块</a>
+          <a href="#stack">技术栈</a>
+          <a href="#read">建议阅读</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="container">
+      <section class="hero" id="why">
+        <div class="hero-grid">
+          <div>
+            <div class="eyebrow">The Open Context Layer for AI</div>
+            <h1>让 AI <span class="accent">理解数据</span>，而不只看表面</h1>
+            <p>
+              OpenMetadata 不是简单的“数据目录”。它把数据资产、血缘、治理、质量、语义、所有者、事件、记忆
+              和 AI 能力整合成一个统一的上下文图谱，让企业数据真正能被人和 AI 共同理解、信任和使用。
+            </p>
+            <div class="cta-row">
+              <a class="button primary" href="#ai">看 AI 能力</a>
+              <a class="button secondary" href="#architecture">看完整链路</a>
+            </div>
+            <div class="fact-row" aria-label="README 中的关键规模信息">
+              <div class="fact"><strong>130+</strong><span>连接器</span></div>
+              <div class="fact"><strong>700+</strong><span>开放 JSON Schema</span></div>
+              <div class="fact"><strong>MCP</strong><span>面向 Agent 的标准入口</span></div>
+            </div>
+          </div>
+
+          <div class="hero-card">
+            <div class="mini-graph" aria-label="OpenMetadata 关系图">
+              <div class="line l1"></div>
+              <div class="line l2"></div>
+              <div class="line l3"></div>
+              <div class="line l4"></div>
+              <div class="line l5"></div>
+              <div class="node n1">数据资产</div>
+              <div class="node n2">血缘 / 质量</div>
+              <div class="node n3">治理 / 标签</div>
+              <div class="node n4">语义 / 术语</div>
+              <div class="node n5">A I / Memory</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="architecture">
+        <div class="section-title">
+          <h2>它解决的核心问题</h2>
+          <span>What makes it different</span>
+        </div>
+
+        <div class="grid-3">
+          <div class="card">
+            <h3>AI 需要上下文</h3>
+            <p>仅仅拿到仓库、表和字段，还远远不够。AI 还需要知道这份数据代表什么、谁负责、它的质量如何、上下游影响是什么。</p>
+          </div>
+          <div class="card">
+            <h3>企业知识经常丢失</h3>
+            <p>很多结论、假设和修复记录都埋在聊天、文档和Ticket里，缺少统一治理与复用能力。</p>
+          </div>
+          <div class="card">
+            <h3>数据需要“被信任”</h3>
+            <p>OpenMetadata 把数据质量、信任信号、政策、数据契约、版本和归属整合起来，帮助 AI 判断“这份数据值得用吗”。</p>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="section-title">
+          <h2>五大能力</h2>
+          <span>Context + Semantics + Memory + Graph + Activation</span>
+        </div>
+
+        <div class="grid-3">
+          <div class="card">
+            <h3>1. Context</h3>
+            <ul>
+              <li>数据库 / 表 / 字段 / 看板 / 数据集</li>
+              <li>质量 / freshness / ownership / 风险</li>
+              <li>技术元数据和使用状况</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>2. Semantics</h3>
+            <ul>
+              <li>Glossary / 分类 / 术语 / 域</li>
+              <li>数据产品 / 政策 / 业务语义</li>
+              <li>把技术名词翻译成业务含义</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>3. Knowledge Graph</h3>
+            <ul>
+              <li>资产之间建立关系</li>
+              <li>列、表、团队、指标、政策互联</li>
+              <li>让系统具备“关联推理”能力</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>4. Memory</h3>
+            <ul>
+              <li>决策、假设、修复说明、事故经验</li>
+              <li>AI thread / runbook / tribal knowledge</li>
+              <li>知识不再消失于聊天记录</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>5. Activation</h3>
+            <ul>
+              <li>MCP / Semantic Search / API / SDK</li>
+              <li>供 AI assistant 与应用直接调用</li>
+              <li>让上下文真正可行动</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>一句话总结</h3>
+            <p>它不是让 AI 读数据库，而是让 AI 读懂“数据为什么重要、谁依赖它、它能不能信任、它的业务意义是什么”。</p>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="section-title">
+          <h2>上下文与记忆图谱：六步链路</h2>
+          <span>README architecture</span>
+        </div>
+
+        <div class="flow">
+          <div class="flow-step">
+            <div class="step-num">1</div>
+            <h3>Collect</h3>
+            <p>从数据仓库、BI、消息系统、流水线、模型、API 等收集元数据与事件。</p>
+          </div>
+          <div class="flow-step">
+            <div class="step-num">2</div>
+            <h3>Normalize</h3>
+            <p>统一 schema 和标准，形成一致的知识表达。</p>
+          </div>
+          <div class="flow-step">
+            <div class="step-num">3</div>
+            <h3>Connect</h3>
+            <p>把表、列、团队、质量、标签、血缘、合同、术语绑定成一张图。</p>
+          </div>
+          <div class="flow-step">
+            <div class="step-num">4</div>
+            <h3>Preserve Memory</h3>
+            <p>保留会话、决策、事故修复和经验，让组织知识可复用。</p>
+          </div>
+          <div class="flow-step">
+            <div class="step-num">5</div>
+            <h3>Govern</h3>
+            <p>用分类、政策、角色、质量、评审和数据契约，让上下文保持可信且符合规则。</p>
+          </div>
+          <div class="flow-step">
+            <div class="step-num">6</div>
+            <h3>Activate</h3>
+            <p>通过搜索、MCP、API、AI SDK 把上下文交给人和 Agent 使用。</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="ai">
+        <div class="section-title">
+          <h2>AI 实际能获得什么上下文</h2>
+          <span>不仅是表结构</span>
+        </div>
+
+        <div class="context-grid">
+          <div class="context-item"><h3>技术元数据</h3><p>库、表、字段、看板、Pipeline、API、模型及其结构。</p></div>
+          <div class="context-item"><h3>质量与信任</h3><p>测试、Freshness、画像、告警、事故和质量历史。</p></div>
+          <div class="context-item"><h3>血缘与影响</h3><p>表级、列级、看板、指标、模型的上下游依赖。</p></div>
+          <div class="context-item"><h3>业务语义</h3><p>术语、指标、KPI、分类、域、标签和数据产品。</p></div>
+          <div class="context-item"><h3>治理规则</h3><p>负责人、Steward、角色、政策、认证和数据契约。</p></div>
+          <div class="context-item"><h3>组织记忆</h3><p>对话、决策、假设、Runbook、修复记录与经验。</p></div>
+          <div class="context-item"><h3>开放标准</h3><p>DCAT、DPROD、PROV-O、OpenLineage、ODCS 与 JSON-LD。</p></div>
+        </div>
+
+        <div class="quote">
+          一个直接连接数据库的 AI 只能看见结构；接入 OpenMetadata 后，它还能判断业务含义、可信度、政策边界、变更影响，以及组织已经积累的经验。
+        </div>
+      </section>
+
+      <section>
+        <div class="section-title">
+          <h2>MCP 与 AI SDK：Agent 可以做什么</h2>
+          <span>可检索，也可受控地行动</span>
+        </div>
+
+        <div class="action-grid">
+          <div class="action"><span class="action-index">01</span><div><h3>按语义搜索</h3><p>例如找到“可信但有近期质量问题的客户购买数据集”。</p></div></div>
+          <div class="action"><span class="action-index">02</span><div><h3>理解资产详情</h3><p>读取描述、负责人、术语、分类、质量、使用情况与契约。</p></div></div>
+          <div class="action"><span class="action-index">03</span><div><h3>追踪血缘与影响</h3><p>分析列变更会影响哪些看板、Pipeline、指标或模型。</p></div></div>
+          <div class="action"><span class="action-index">04</span><div><h3>保存与复用记忆</h3><p>把事故调查、修复方案、决策和业务解释沉淀为可治理知识。</p></div></div>
+          <div class="action"><span class="action-index">05</span><div><h3>辅助治理</h3><p>建议描述、术语、敏感数据分类、负责人和契约上下文。</p></div></div>
+          <div class="action"><span class="action-index">06</span><div><h3>自动化数据质量</h3><p>创建测试、归纳失败、定位根因、保留修复记忆并提出下一步。</p></div></div>
+        </div>
+      </section>
+
+      <section>
+        <div class="section-title">
+          <h2>它能支持的典型场景</h2>
+          <span>README use cases</span>
+        </div>
+
+        <div class="grid-3">
+          <div class="card"><h3>AI 数据发现</h3><p>用自然语言跨越命名差异，找到真正相关的数据资产、指标、术语和数据产品。</p></div>
+          <div class="card"><h3>可信 AI 助手</h3><p>在回答前读取所有者、质量、Freshness、血缘、政策、契约和组织记忆，减少“只看表名就猜”的风险。</p></div>
+          <div class="card"><h3>编码 Agent</h3><p>生成 SQL、dbt 模型、文档、测试、迁移计划或影响分析前，先理解业务定义与上下游约束。</p></div>
+        </div>
+      </section>
+
+      <section id="modules">
+        <div class="section-title">
+          <h2>仓库里关键模块</h2>
+          <span>Project structure</span>
+        </div>
+
+        <div class="module-grid">
+          <div class="module">
+            <div class="tag">Backend</div>
+            <h3>openmetadata-service</h3>
+            <p>Java 后端，提供 REST API、Repository、搜索、迁移和核心业务逻辑。它是整个项目的中枢。</p>
+          </div>
+          <div class="module">
+            <div class="tag">Frontend</div>
+            <h3>openmetadata-ui</h3>
+            <p>React + TypeScript 前端，负责展示目录、搜索、治理、线索和资产详情等页面。</p>
+          </div>
+          <div class="module">
+            <div class="tag">Ingestion</div>
+            <h3>ingestion</h3>
+            <p>Python 采集层，从不同数据源拉取元数据并通过 API 写回后端。</p>
+          </div>
+          <div class="module">
+            <div class="tag">Schema</div>
+            <h3>openmetadata-spec</h3>
+            <p>JSON Schema 是项目的“真相源”，Java / Python / TypeScript 代码都由它生成。</p>
+          </div>
+          <div class="module">
+            <div class="tag">Search</div>
+            <h3>Search / Index</h3>
+            <p>通过 Elasticsearch / OpenSearch 提供语义和结构化搜索能力。</p>
+          </div>
+          <div class="module">
+            <div class="tag">AI</div>
+            <h3>MCP / SDK</h3>
+            <p>让 AI assistant 和 Agent 能以标准化方式访问数据上下文和记忆。</p>
+          </div>
+          <div class="module">
+            <div class="tag">UI Lib</div>
+            <h3>openmetadata-ui-core-components</h3>
+            <p>统一按钮、表格、表单和设计 token 等前端组件能力。</p>
+          </div>
+          <div class="module">
+            <div class="tag">Ops</div>
+            <h3>docker / conf / bootstrap</h3>
+            <p>包含本地开发、部署配置、数据库迁移和基础设施运行方式。</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="stack">
+        <div class="section-title">
+          <h2>技术栈速览</h2>
+          <span>Stack at a glance</span>
+        </div>
+
+        <div class="grid-3">
+          <div class="card">
+            <h3>后端</h3>
+            <div class="stack-list">
+              <div class="stack-item"><span class="chip"></span>Java 21</div>
+              <div class="stack-item"><span class="chip"></span>Dropwizard</div>
+              <div class="stack-item"><span class="chip"></span>JAX-RS / REST</div>
+              <div class="stack-item"><span class="chip"></span>JDBI3</div>
+            </div>
+          </div>
+          <div class="card">
+            <h3>前端</h3>
+            <div class="stack-list">
+              <div class="stack-item"><span class="chip"></span>React</div>
+              <div class="stack-item"><span class="chip"></span>TypeScript</div>
+              <div class="stack-item"><span class="chip"></span>Vite</div>
+              <div class="stack-item"><span class="chip"></span>Tailwind / UI core</div>
+            </div>
+          </div>
+          <div class="card">
+            <h3>数据与搜索</h3>
+            <div class="stack-list">
+              <div class="stack-item"><span class="chip"></span>MySQL / PostgreSQL</div>
+              <div class="stack-item"><span class="chip"></span>Elasticsearch / OpenSearch</div>
+              <div class="stack-item"><span class="chip"></span>Airflow</div>
+              <div class="stack-item"><span class="chip"></span>JSON Schema</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="read">
+        <div class="section-title">
+          <h2>如果你只看 3 份文档</h2>
+          <span>最有效阅读顺序</span>
+        </div>
+
+        <div class="card">
+          <ol>
+            <li><strong>README.md</strong>：理解项目存在的意义和产品定位。</li>
+            <li><strong>ARCHITECTURE.md</strong>：理解系统结构、模块关系和关键数据流。</li>
+            <li><strong>DEVELOPER.md</strong>：理解如何搭建、构建、测试和扩展项目。</li>
+          </ol>
+
+          <div class="quote">
+            你可以把 OpenMetadata 理解成：<br />
+            “一个让企业数据具备语义、治理、血缘、质量和记忆，并能被 AI 可靠使用的统一元数据平台。”
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="container footer">
+      OpenMetadata 项目速览页 · 适合快速建立整体认知
+    </footer>
+  </body>
+</html>

@@ -58,7 +58,9 @@ public interface EntityInterface {
 
   ChangeDescription getChangeDescription();
 
-  ChangeDescription getIncrementalChangeDescription();
+  default ChangeDescription getIncrementalChangeDescription() {
+    return null;
+  }
 
   default UsageDetails getUsageSummary() {
     return null;
@@ -155,7 +157,9 @@ public interface EntityInterface {
 
   void setChangeDescription(ChangeDescription changeDescription);
 
-  void setIncrementalChangeDescription(ChangeDescription incrementalChangeDescription);
+  default void setIncrementalChangeDescription(ChangeDescription incrementalChangeDescription) {
+    /* no-op implementation to be overridden */
+  }
 
   default void setUsageSummary(UsageDetails usageSummary) {}
 

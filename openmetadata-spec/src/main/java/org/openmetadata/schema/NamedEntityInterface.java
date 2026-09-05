@@ -121,16 +121,4 @@ public interface NamedEntityInterface extends EntityInterface {
   @Override
   default void setChildren(List<EntityReference> children) {}
 
-  @Override
-  default ChangeDescription getIncrementalChangeDescription() {
-    return null;
-  }
-
-  @Override
-  default void setIncrementalChangeDescription(ChangeDescription changeDescription) {}
-
-  @Override
-  default EntityReference getService() {
-    return null;
-  }
 }

@@ -368,6 +368,16 @@ See the contribution guide in this repository to get started.
 - [Development Environment Setup](https://docs.open-metadata.org/v1.12.x/developers/contribute/development-environment-setup)
 - [Build Code & Run Tests](https://docs.open-metadata.org/v1.12.x/developers/contribute/build-code-and-run-tests)
 
+### Build the Java Client from Source
+
+The Java client is generated from the service OpenAPI specification. Build the service first so
+`openmetadata-service/target/classes/assets/swagger.yaml` is available to the client generator:
+
+```powershell
+mvn -pl openmetadata-service -am -DskipTests package
+mvn -pl openmetadata-clients/openmetadata-java-client -am -DskipTests compile
+```
+
 ---
 
 ## License
